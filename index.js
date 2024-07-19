@@ -62,18 +62,21 @@ function addCartClicked(event){
 }
 
 function addProductToCart(title, price, productImg) {
-    var cartShopBox = document.createElement("div");
-    cartShopBox.classList.add('cart-box')
-    var cartItems = document.getElementsByClassName('cart-content')[0]
-    var cartItemsNames = cartItems.getElementsByClassName('cart-product-title')
-    for(var i=0; i< cartItemsNames.length; i++){
-        if(cartItemsNames[i].innerText == title) {
-            alert("You have already added this item to cart");
+    
+    var cartItems = document.getElementsByClassName('cart-content')[0];
+    var cartItemsNames = cartItems.getElementsByClassName('cart-product-title');
+    for (var i = 0; i < cartItemsNames.length; i++) {
+        if (cartItemsNames[i].innerText.trim().toLowerCase() === title.trim().toLowerCase()) {
+            showNotification(title + " jersey is already in the cart");
             return;
         }
     }
+   
+    var cartShopBox = document.createElement("div");
+    cartShopBox.classList.add('cart-box');
+
     var cartBoxContent = `
-        <img src="${productImg}" class="cart-img">
+        <img src="${productImg}" alt="Product Image" class="cart-img">
         <div class="detail-box">
             <div class="cart-product-title">${title}</div>
             <div class="cart-price">${price}</div>
@@ -87,13 +90,14 @@ function addProductToCart(title, price, productImg) {
             <input type="number" value="1" class="cart-quantity">
         </div>
         <i class='bx bxs-trash-alt cart-remove'></i>`;
-  
+
     cartShopBox.innerHTML = cartBoxContent;
     cartItems.append(cartShopBox);
     cartShopBox.getElementsByClassName('cart-remove')[0].addEventListener('click', removeCartItem);
     cartShopBox.getElementsByClassName('cart-quantity')[0].addEventListener('change', quantityChanged);
-}
 
+    // Show notification
+    showNotification(title + " jersey had been added to cart");
 
   
 //   var addCart = document.getElementsByClassName("add-cart");
@@ -119,16 +123,35 @@ function updatetotal() {
     var cartContent = document.getElementsByClassName("cart-content")[0];
     var cartBoxes = cartContent.getElementsByClassName("cart-box");
     var total = 0;
-    for(var i = 0; i< cartBoxes.length; i++) {
+    for (var i = 0; i < cartBoxes.length; i++) {
         var cartBox = cartBoxes[i];
         var priceElement = cartBox.getElementsByClassName("cart-price")[0];
         var quantityElement = cartBox.getElementsByClassName("cart-quantity")[0];
-        var sizeElement = cartBox.getElementsByClassName("cart-size")[0];
-        var price = parseFloat(priceElement.innerText.replace("$",""));
+        var price = parseFloat(priceElement.innerText.replace("$", ""));
         var quantity = quantityElement.value;
-        var size = sizeElement.value;
-        total  = total + (price * quantity);
+        total = total + (price * quantity);
     }
-    total = Math.round(total * 100/100);
+
+    total = Math.round(total * 100) / 100;
     document.getElementsByClassName('total-price')[0].innerText = "$" + total;
+}
+
+
+function showNotification(message) {
+    console.log("Notification:", message); // Debug log
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+
+
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
 }
