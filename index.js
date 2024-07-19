@@ -1,77 +1,100 @@
+// Select DOM elements
 let cartIcon = document.querySelector("#cart-icon");
 let cart = document.querySelector(".cart");
 let closeCart = document.querySelector("#close-cart");
 
-
+// Open cart
 cartIcon.onclick = () => {
     cart.classList.add("active");
 };
 
+// Close cart
 closeCart.onclick = () => {
     cart.classList.remove("active");
 };
 
+// Check if DOM is loaded
 if (document.readyState == "loading") {
     document.addEventListener("DOMContentLoaded", ready);
 } else {
     ready();
 }
 
-function ready(){
-    var removeCartButtons = document.getElementsByClassName('cart-remove')
-    console.log(removeCartButtons)
-    for(var i = 0; i< removeCartButtons.length; i++){
-        var button = removeCartButtons[i]
-        button.addEventListener('click', removeCartItem)
+// Function to initialize the cart
+function ready() {
+    // Remove items from cart
+    var removeCartButtons = document.getElementsByClassName('cart-remove');
+    for (var i = 0; i < removeCartButtons.length; i++) {
+        var button = removeCartButtons[i];
+        button.addEventListener('click', removeCartItem);
     }
-    var quantityInputs = document.getElementsByClassName('cart-quantity')
-    for (var i = 0; i< quantityInputs.length; i++){
-    var input = quantityInputs[i];
-    input.addEventListener("change", quantityChanged);
+
+    // Quantity changes
+    var quantityInputs = document.getElementsByClassName('cart-quantity');
+    for (var i = 0; i < quantityInputs.length; i++) {
+        var input = quantityInputs[i];
+        input.addEventListener("change", quantityChanged);
     }
+
+    // Add to cart
     var addCart = document.getElementsByClassName('add-cart');
-    for(var i = 0; i< addCart.length; i++){
+    for (var i = 0; i < addCart.length; i++) {
         var button = addCart[i];
         button.addEventListener("click", addCartClicked);
     }
+
+    // Buy button work
+    document
+        .getElementsByClassName('btn-buy')[0]
+        .addEventListener('click', buyButtonClicked);
 }
 
-function removeCartItem(event){
-     var buttonClicked = event.target
-    buttonClicked.parentElement.remove()
+// Remove item from cart
+function removeCartItem(event) {
+    var buttonClicked = event.target;
+    buttonClicked.parentElement.remove();
     updatetotal();
 }
 
-
+// Quantity changes
 function quantityChanged(event) {
     var input = event.target;
-    if(isNaN(input.value)  ||  input.value <= 0) {
+    if (isNaN(input.value) || input.value <= 0) {
         input.value = 1;
     }
     updatetotal();
 }
 
-function addCartClicked(event){
+// Add to cart
+function addCartClicked(event) {
     var button = event.target;
-    var shopProducts = button.parentElement
+    var shopProducts = button.parentElement;
     var title = shopProducts.getElementsByClassName('product-title')[0].innerText;
     var price = shopProducts.getElementsByClassName('price')[0].innerText;
-    var productImg = shopProducts.getElementsByClassName('product-img')[0].src;  
-    addProductToCart(title,price,productImg);
+    var productImg = shopProducts.getElementsByClassName('product-img')[0].src;
+    addProductToCart(title, price, productImg);
     updatetotal();
 }
 
+// Add product to cart
 function addProductToCart(title, price, productImg) {
-    
+    console.log("Attempting to add product:", title); // Debug log
     var cartItems = document.getElementsByClassName('cart-content')[0];
     var cartItemsNames = cartItems.getElementsByClassName('cart-product-title');
+    
+    console.log("Number of items in cart:", cartItemsNames.length); // Debug log
+
     for (var i = 0; i < cartItemsNames.length; i++) {
+        console.log("Comparing:", cartItemsNames[i].innerText, "with", title); // Debug log
         if (cartItemsNames[i].innerText.trim().toLowerCase() === title.trim().toLowerCase()) {
+            console.log("Item already in cart"); // Debug log
             showNotification(title + " jersey is already in the cart");
             return;
         }
     }
-   
+
+    console.log("Adding new item to cart"); // Debug log
+
     var cartShopBox = document.createElement("div");
     cartShopBox.classList.add('cart-box');
 
@@ -98,27 +121,19 @@ function addProductToCart(title, price, productImg) {
 
     // Show notification
     showNotification(title + " jersey had been added to cart");
+}
 
-  
-//   var addCart = document.getElementsByClassName("add-cart");
-//   for(var i = 0;i< addCart.length; i++) {
-//     var button=addCart[i];
-//     button.addEventListener("click", addCartClicked);
-//   }
-//         document
-//         .getElementsByClassName('btn-buy')[0]
-//         .addEventListener('click', buyButtonClicked);
-
-//     function buyButtonClicked(){
-//         alert("Your Order is placed");
-//         var cartContent = document.getElementsByClassName('cart-content')[0];
-//         while(cartContent.hasChildNodes()) {
-//             cartContent.removeChild(cartContent.firstChild)
-//         }
+// Buy button
+// function buyButtonClicked() {
+//     alert("Your Order is placed");
+//     var cartContent = document.getElementsByClassName('cart-content')[0];
+//     while (cartContent.hasChildNodes()) {
+//         cartContent.removeChild(cartContent.firstChild);
 //     }
+//     updatetotal();
+// }
 
-
-//update total
+// Update total
 function updatetotal() {
     var cartContent = document.getElementsByClassName("cart-content")[0];
     var cartBoxes = cartContent.getElementsByClassName("cart-box");
@@ -131,23 +146,25 @@ function updatetotal() {
         var quantity = quantityElement.value;
         total = total + (price * quantity);
     }
-
+    // If price contains some cents
     total = Math.round(total * 100) / 100;
     document.getElementsByClassName('total-price')[0].innerText = "$" + total;
 }
 
-
+// Show notification
 function showNotification(message) {
     console.log("Notification:", message); // Debug log
     const notification = document.createElement('div');
     notification.classList.add('notification');
     notification.textContent = message;
     document.body.appendChild(notification);
+
+    // Add 'show' class to trigger animation
     setTimeout(() => {
         notification.classList.add('show');
     }, 10);
 
-
+    // Remove notification after 3 seconds
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => {
