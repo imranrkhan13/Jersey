@@ -1,41 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="stylesheet" href="bu.css">
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-	<title>checkout</title>
+    <link rel="stylesheet" href="bu.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Checkout</title>
 </head>
-  <body>
+<body>
+  <form id="checkoutForm">
+        <h1>Checkout</h1>
+        
+        <div id="purchaseItems">
+            <!-- Purchase items will be displayed here -->
+        </div>
 
-    <form>
-		<h1>Checkout</h1>
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name"><br>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
 
-      <label for="phone">Phone Number:</label>
-      <input type="text" id="phone" name="phone"><br>
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" name="phone"required><br>
 
-      <label for="address">Address:</label>
-      <input type="text" id="address" name="address"><br>
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" required><br>
 
-      <label for="city">City:</label>
-      <input type="text" id="city" name="city"><br>
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" required><br>
 
-      <label for="state">State:</label>
-      <input type="text" id="state" name="state"><br>
+        <label for="state">State:</label>
+        <input type="text" id="state" name="state" required><br>
 
-      <label for="zip">Zip Code:</label>
-      <input type="text" id="zip" name="zip"><br>
-	  <h2>Payment Method: </h2>
+        <label for="zip">Zip Code:</label>
+        <input type="text" id="zip" name="zip" required><br>
 
-	  <button>Paypal</button>
-	  <button>Gpay</button>
+        <h2>Payment Method: </h2>
+        <div class="payment-buttons">
+          <label>
+              <input type="radio" name="paymentMethod" value="Paypal" required>
+              Paypal
+          </label>
+          <label>
+              <input type="radio" name="paymentMethod" value="Gpay" required>
+              Gpay
+          </label>
+      </div>
 
+      <button type="submit" class="buy-now-button">Buy Now</button>
+  </form>
+</div>
 
-	</form>
-	<script src="bu.php"></script>
-</body>
-</html>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      var purchaseItems = JSON.parse(localStorage.getItem('purchaseItems')) || [];
+      var purchaseItemsContainer = document.getElementById('purchaseItems');
+
+      var totalPrice = 0;
+
+      purchaseItems.forEach(function(item) {
+          var itemElement = document.createElement('div');
+          itemElement.className = 'purchase-item';
+          itemElement.innerHTML = `
+              <div class="item-info">
+                  <h3>${item.title}</h3>
+                  <p><strong>Size:</strong> ${item.size}</p>
+                  <p><strong>Quantity:</strong> ${item.quantity}</p>
+              </div>
+              <div class="item-price">
+                  <p>${item.price}</p>
+              </div>
+          `;
+          purchaseItemsContainer.appendChild(itemElement);
+
+          totalPrice += parseFloat(item.price.replace('$', '')) * parseInt(item.quantity);
+      });
+
+      var totalElement = document.createElement('div');
+      totalElement.className = 'total-price';
+      totalElement.innerHTML = `<h3>Total Price: $${totalPrice.toFixed(2)}</h3>`;
+      purchaseItemsContainer.appendChild(totalElement);
+
+      document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+          e.preventDefault();
+          var formData = new FormData(this);
+          var customerInfo = {};
+          formData.forEach((value, key) => { customerInfo[key] = value });
+          localStorage.setItem('customerInfo', JSON.stringify(customerInfo));
+          window.location.href = 'receipt.html';
+      });
+  });
+</script>
