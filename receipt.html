@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="receipt.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Receipt</title>
+</head>
+<body>
+    <div class="receipt-container">
+        <h1>Purchase Receipt</h1>
+        <div id="receiptContent"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var purchaseItems = JSON.parse(localStorage.getItem('purchaseItems')) || [];
+            var customerInfo = JSON.parse(localStorage.getItem('customerInfo')) || {};
+            var receiptContent = document.getElementById('receiptContent');
+
+            var receiptHTML = `
+                <div class="customer-info">
+                    <p><strong>Name:</strong> ${customerInfo.name}</p>
+                    <p><strong>Phone:</strong> ${customerInfo.phone}</p>
+                    <p><strong>Address:</strong> ${customerInfo.address}, ${customerInfo.city}, ${customerInfo.state} ${customerInfo.zip}</p>
+                    <p><strong>Payment Method:</strong> ${customerInfo.paymentMethod}</p>
+                </div>
+                <div class="purchase-items">
+                    ${purchaseItems.map(item => `
+                        <div class="purchase-item">
+                            <span>${item.title} (${item.size})</span>
+                            <span>${item.quantity} x ${item.price}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="total-price">
+                    <strong>Total: $${purchaseItems.reduce((total, item) => total + (parseFloat(item.price.replace('$', '')) * parseInt(item.quantity)), 0).toFixed(2)}</strong>
+                </div>
+                <div class="purchase-date">
+                    <p>Purchase Date: ${new Date().toLocaleString()}</p>
+                </div>
+            `;
+
+            receiptContent.innerHTML = receiptHTML;
+
+            // Clear localStorage
+            localStorage.removeItem('purchaseItems');
+            localStorage.removeItem('customerInfo');
+        });
+    </script>
+</body>
+</html>
