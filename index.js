@@ -172,3 +172,36 @@ function showNotification(message) {
         }, 300);
     }, 3000);
 }
+// ... (previous code remains the same)
+
+// Buy button
+function buyButtonClicked() {
+    var cartContent = document.getElementsByClassName('cart-content')[0];
+    var cartBoxes = cartContent.getElementsByClassName("cart-box");
+    var purchaseItems = [];
+
+    for (var i = 0; i < cartBoxes.length; i++) {
+        var cartBox = cartBoxes[i];
+        var titleElement = cartBox.getElementsByClassName("cart-product-title")[0];
+        var priceElement = cartBox.getElementsByClassName("cart-price")[0];
+        var quantityElement = cartBox.getElementsByClassName("cart-quantity")[0];
+        var sizeElement = cartBox.getElementsByClassName("cart-size")[0];
+
+        var item = {
+            title: titleElement.innerText,
+            price: priceElement.innerText,
+            quantity: quantityElement.value,
+            size: sizeElement.value
+        };
+
+        purchaseItems.push(item);
+    }
+
+    // Store the purchase items in localStorage
+    localStorage.setItem('purchaseItems', JSON.stringify(purchaseItems));
+
+    // Redirect to the checkout page
+    window.location.href = 'checkout.html';
+}
+
+// ... (rest of the code remains the same)
