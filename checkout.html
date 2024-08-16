@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="bu.css">
+    <link rel="stylesheet" href="checkout.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +15,8 @@
         <div id="purchaseItems">
             <!-- Purchase items will be displayed here -->
         </div>
-
+        
+<div class="info"></div>
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required><br>
 
@@ -45,48 +46,55 @@
               Gpay
           </label>
       </div>
+      </div>
 
       <button type="submit" class="buy-now-button">Buy Now</button>
   </form>
 </div>
+</div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-      var purchaseItems = JSON.parse(localStorage.getItem('purchaseItems')) || [];
-      var purchaseItemsContainer = document.getElementById('purchaseItems');
+document.addEventListener('DOMContentLoaded', function() {
+    var purchaseItems = JSON.parse(localStorage.getItem('purchaseItems')) || [];
+    var purchaseItemsContainer = document.getElementById('purchaseItems');
 
-      var totalPrice = 0;
+    var totalPrice = 0;
 
-      purchaseItems.forEach(function(item) {
-          var itemElement = document.createElement('div');
-          itemElement.className = 'purchase-item';
-          itemElement.innerHTML = `
-              <div class="item-info">
-                  <h3>${item.title}</h3>
-                  <p><strong>Size:</strong> ${item.size}</p>
-                  <p><strong>Quantity:</strong> ${item.quantity}</p>
-              </div>
-              <div class="item-price">
-                  <p>${item.price}</p>
-              </div>
-          `;
-          purchaseItemsContainer.appendChild(itemElement);
+    purchaseItems.forEach(function(item) {
+        console.log("Image path:", item.productImg); // Add this line here
 
-          totalPrice += parseFloat(item.price.replace('$', '')) * parseInt(item.quantity);
-      });
+        var itemElement = document.createElement('div');
+        itemElement.className = 'purchase-item';
+        itemElement.innerHTML = `
+            <div class="item-image">
+                <img src="${item.productImg}" alt="${item.title} Jersey" onerror="this.onerror=null; this.src='default.jpg'">
+            </div>
+            <div class="item-details">
+                <h3>${item.title}</h3>
+                <p><strong>Size:</strong> ${item.size}</p>
+                <p><strong>Quantity:</strong> ${item.quantity}</p>
+                <p><strong>Price:</strong> ${item.price}</p>
+            </div>
+        `;
+        purchaseItemsContainer.appendChild(itemElement);
 
-      var totalElement = document.createElement('div');
-      totalElement.className = 'total-price';
-      totalElement.innerHTML = `<h3>Total Price: $${totalPrice.toFixed(2)}</h3>`;
-      purchaseItemsContainer.appendChild(totalElement);
+        totalPrice += parseFloat(item.price.replace('$', '')) * parseInt(item.quantity);
+    });
 
-      document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-          e.preventDefault();
-          var formData = new FormData(this);
-          var customerInfo = {};
-          formData.forEach((value, key) => { customerInfo[key] = value });
-          localStorage.setItem('customerInfo', JSON.stringify(customerInfo));
-          window.location.href = 'receipt.html';
-      });
+
+var totalElement = document.createElement('div');
+totalElement.className = 'total-price';
+totalElement.innerHTML = `<h3>Total Price: $${totalPrice.toFixed(2)}</h3>`;
+purchaseItemsContainer.appendChild(totalElement);
+
+document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    var customerInfo = {};
+    formData.forEach((value, key) => { customerInfo[key] = value });
+    localStorage.setItem('customerInfo', JSON.stringify(customerInfo));
+    window.location.href = 'receipt.html';
+});
+
   });
 </script>
