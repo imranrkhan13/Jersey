@@ -301,6 +301,7 @@ header {
     position: fixed;
     top: 50%;
     left: 50%;
+    font-weight: 800;
     background-color: #E68369;
     color: white;
     padding: 15px;
