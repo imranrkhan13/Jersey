@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #F7EFE5;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,9 +19,10 @@ body {
 
 h1 {
     text-align: center;
-    color: #333;
-    border-bottom: 2px dashed #ccc;
+    color: #6a4c93;
+    border-bottom: 2px dashed #C5705D;
     padding-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .customer-info {
@@ -30,6 +31,7 @@ h1 {
 
 .customer-info p {
     margin: 5px 0;
+    color: #333;
 }
 
 .purchase-items {
@@ -49,6 +51,10 @@ h1 {
     text-align: right;
     font-size: 1.2em;
     margin-top: 10px;
+    font-weight: bold;
+    color: #6a4c93;
+    border-top: 2px solid #C5705D;
+    padding-top: 10px;
 }
 
 .purchase-date {
@@ -57,4 +63,33 @@ h1 {
     margin-top: 20px;
     font-size: 0.9em;
     color: #666;
+}
+
+.order-message {
+    text-align: center;
+    font-size: 1.2em;
+    color: #C5705D;
+    margin-top: 20px;
+    padding: 10px;
+    background: #F7EFE5;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.order-message::before {
+    content: "🎉";
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    opacity: 0;
+    animation: confetti 5s ease-out infinite;
+}
+
+@keyframes confetti {
+    0% { top: -50px; opacity: 0; }
+    50% { top: 50px; opacity: 1; }
+    100% { top: -50px; opacity: 0; }
 }
