@@ -1,102 +1,379 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="checkout.css">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <title>Checkout</title>
-</head>
-<body>
-  <form id="checkoutForm">
-        <h1>Checkout</h1>
-        
-        <div id="purchaseItems">
-            <!-- Purchase items will be displayed here -->
-        </div>
-        
-        <!-- Line separator -->
-        <hr class="separator">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,500;1,600&display=swap');
 
-        <!-- Total price container -->
-        <div class="total-price">
-            <h3>Total Price: <span id="totalCost">$0.00</span></h3>
-        </div>
-        
-        <div class="info"></div>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br>
+:root {
+    --main-color: #6a4c93;
+    --text-color: #2b2d42;
+    --bg-color: #f8f9fa;
+    --accent-color: #8ac926;
+}
 
-        <label for="phone">Phone Number:</label>
-        <input type="text" id="phone" name="phone" required><br>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    list-style: none;
+    text-decoration: none;
+}
 
-        <label for="address">Address:</label>
-        <input type="text" id="address" name="address" required><br>
+body {
+    color: var(--text-color);
+    background-color: #F7EFE5;
+    transition: background-color 0.3s ease;
+}
 
-        <label for="city">City:</label>
-        <input type="text" id="city" name="city" required><br>
+img {
+    width: 100%;
+    background-color: #F8DFD4;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
 
-        <label for="state">State:</label>
-        <input type="text" id="state" name="state" required><br>
+img:hover {
+    transform: scale(1.05);
+}
 
-        <label for="zip">Zip Code:</label>
-        <input type="text" id="zip" name="zip" required><br>
+.container {
+    max-width: 1068px;
+    margin: auto;
+    width: 100%;
+}
 
-        <h2>Payment Method: </h2>
-        <div class="payment-buttons">
-          <label>
-              <input type="radio" name="paymentMethod" value="Paypal" required>
-              Paypal
-          </label>
-          <label>
-              <input type="radio" name="paymentMethod" value="Gpay" required>
-              Gpay
-          </label>
-      </div>
-      <button type="submit" class="buy-now-button">Buy Now</button>
-  </form>
+section {
+    padding: 4rem 0 3rem;
+}
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    var purchaseItems = JSON.parse(localStorage.getItem('purchaseItems')) || [];
-    var purchaseItemsContainer = document.getElementById('purchaseItems');
+.section-title {
+    margin-top: 56px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
 
-    var totalPrice = 0;
+.product-box i{
+    margin-bottom: 10px;
+    border-radius: 6px;
+    line-height: 1;
+    margin-right: 10px;
+}
+header {
+    position: fixed;
+    top: 11px;
+    left: 0;
+    margin-left: 8pc;
+    width: 82%;
+    background: #C5705D;
+    box-shadow: 0 1px 4px hsla(0, 4%, 15%, 0.1);
+    z-index: 100;
+    transition: background-color 0.3s ease;
+    border-radius: 23px;
+}
 
-    purchaseItems.forEach(function(item) {
-        console.log("Image path:", item.productImg); // Add this line here
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+}
 
-        var itemElement = document.createElement('div');
-        itemElement.className = 'purchase-item';
-        itemElement.innerHTML = `
-            <div class="item-image">
-                <img src="${item.productImg}" alt="${item.title} Jersey" onerror="this.onerror=null; this.src='default.jpg'">
-            </div>
-            <div class="item-details">
-                <h3>${item.title}</h3>
-                <p><strong>Size:</strong> ${item.size}</p>
-                <p><strong>Quantity:</strong> ${item.quantity}</p>
-                <p><strong>Price:</strong> ${item.price}</p>
-            </div>
-        `;
-        purchaseItemsContainer.appendChild(itemElement);
+.logo {
+    color: var(--bg-color);
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
 
-        totalPrice += parseFloat(item.price.replace('$', '')) * parseInt(item.quantity);
-    });
+.logo:hover {
+    color: var(--accent-color);
+}
 
-    var totalCostElement = document.getElementById('totalCost');
-    totalCostElement.textContent = `$${totalPrice.toFixed(2)}`;
+#cart-icon {
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--bg-color);
+    transition: color 0.3s ease;
+}
 
-    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        var customerInfo = {};
-        formData.forEach((value, key) => { customerInfo[key] = value });
-        localStorage.setItem('customerInfo', JSON.stringify(customerInfo));
-        window.location.href = 'receipt.html';
-    });
-});
-</script>
-</body>
-</html>
+#cart-icon:hover {
+    color: var(--accent-color);
+}
+
+.cart {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 360px;
+    height: 100vh;
+    padding: 20px;
+    background: var(--bg-color);
+    box-shadow: -2px 0 4px hsla(0, 4%, 15%, 0.1);
+    transition: 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.cart.active {
+    right: 0;
+}
+
+.cart-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 0px;
+}
+
+.cart-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.cart-box {
+    display: grid;
+    grid-template-columns: 32% 50% 18%;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cart-img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.detail-box {
+    display: grid;
+    row-gap: 0.5rem;
+}
+
+.cart-product-title {
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-color);
+}
+
+.cart-price {
+    font-weight: 500;
+    color: var(--main-color);
+}
+
+.cart-quantity {
+    border: 1px solid var(--text-color);
+    outline-color: var(--main-color);
+    width: 2.4rem;
+    text-align: center;
+    font-size: 1rem;
+    border-radius: 4px;
+}
+
+.cart-remove {
+    font-size: 24px;
+    color: var(--main-color);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.cart-remove:hover {
+    color: var(--accent-color);
+}
+
+.total {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+    border-top: 1px solid var(--text-color);
+}
+
+.total-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-right: 1rem;
+}
+
+.total-price {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--main-color);
+}
+
+.btn-buy {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem auto 0 auto;
+    padding: 12px 20px;
+    border: none;
+    background: var(--main-color);
+    color: var(--bg-color);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-buy:hover {
+    background: var(--accent-color);
+}
+
+#close-cart {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-size: 2rem;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+#close-cart:hover {
+    color: var(--main-color);
+    transform: rotate(90deg);
+}
+
+.shop-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, auto));
+    gap: 1.5rem;
+    animation: fadeIn 1s ease-out;
+}
+
+.product-box {
+    position: relative;
+    padding: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.product-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.product-img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.product-title {
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.price {
+    font-weight: 500;
+    color: var(--main-color);
+}
+
+.add-cart {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: var(--main-color);
+    color: var(--bg-color);
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-cart:hover {
+    background: var(--accent-color);
+}
+
+.notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    font-weight: 800;
+    background-color: #E68369;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 1000;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Responsive Design */
+@media (max-width: 1080px) {
+    .nav {
+        padding: 15px;
+    }
+
+    section {
+        padding: 3rem 0 2rem;
+    }
+
+    .container {
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    header {
+        margin-left: 4pc;
+        width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 16px;
+    }
+
+    .cart-img {
+        width: 91%;
+    }
+
+    header {
+        margin-left: 20px;
+        width: 92%;
+    }
+}
+
+@media (max-width: 400px) {
+    .nav {
+        padding: 11px;
+    }
+
+    .logo {
+        font-size: 1rem;
+    }
+
+    .cart {
+        width: 320px;
+    }
+
+    header {
+        margin-left: 1pc;
+        width: 94%;
+    }
+}
