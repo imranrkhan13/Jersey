@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #F7EFE5;
+    background-color: #CA8787;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,7 +9,7 @@ body {
 }
 
 .receipt-container {
-    background-color: white;
+    background-color: #FFF7F1;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
