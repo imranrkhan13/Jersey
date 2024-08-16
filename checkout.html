@@ -16,12 +16,20 @@
             <!-- Purchase items will be displayed here -->
         </div>
         
-<div class="info"></div>
+        <!-- Line separator -->
+        <hr class="separator">
+
+        <!-- Total price container -->
+        <div class="total-price">
+            <h3>Total Price: <span id="totalCost">$0.00</span></h3>
+        </div>
+        
+        <div class="info"></div>
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required><br>
 
         <label for="phone">Phone Number:</label>
-        <input type="text" id="phone" name="phone"required><br>
+        <input type="text" id="phone" name="phone" required><br>
 
         <label for="address">Address:</label>
         <input type="text" id="address" name="address" required><br>
@@ -46,12 +54,8 @@
               Gpay
           </label>
       </div>
-      </div>
-
       <button type="submit" class="buy-now-button">Buy Now</button>
   </form>
-</div>
-</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -81,20 +85,18 @@ document.addEventListener('DOMContentLoaded', function() {
         totalPrice += parseFloat(item.price.replace('$', '')) * parseInt(item.quantity);
     });
 
+    var totalCostElement = document.getElementById('totalCost');
+    totalCostElement.textContent = `$${totalPrice.toFixed(2)}`;
 
-var totalElement = document.createElement('div');
-totalElement.className = 'total-price';
-totalElement.innerHTML = `<h3>Total Price: $${totalPrice.toFixed(2)}</h3>`;
-purchaseItemsContainer.appendChild(totalElement);
-
-document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    var formData = new FormData(this);
-    var customerInfo = {};
-    formData.forEach((value, key) => { customerInfo[key] = value });
-    localStorage.setItem('customerInfo', JSON.stringify(customerInfo));
-    window.location.href = 'receipt.html';
+    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        var customerInfo = {};
+        formData.forEach((value, key) => { customerInfo[key] = value });
+        localStorage.setItem('customerInfo', JSON.stringify(customerInfo));
+        window.location.href = 'receipt.html';
+    });
 });
-
-  });
 </script>
+</body>
+</html>
