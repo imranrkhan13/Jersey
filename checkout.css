@@ -198,13 +198,20 @@ button:hover, input[type="submit"]:hover {
   .item-details {
     margin-left: 5px;
   }
+  #purchaseItems {
+    display: flex;
+    align-items: center;
+
+    flex-direction: column;
+  }
 }
 
 @media screen and (max-width: 486px) {
   .purchase-item {
-    width: 211px;
-    flex-direction: column;
-    margin-right: 10px;/* Further adjust width for smallest screens */
+    width: 241px;
+    flex-direction: row;
+    margin-right: 10px;
+
   }
 
   .item-image img {
@@ -212,6 +219,12 @@ button:hover, input[type="submit"]:hover {
   }
 
   .item-details {
-    margin-left: 5px;
+    margin-left: 15px;
+  }
+  #purchaseItems {
+    display: flex;
+    align-items: center;
+
+    flex-direction: column;
   }
 }
