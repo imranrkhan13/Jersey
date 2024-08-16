@@ -78,6 +78,7 @@ button:hover, input[type="submit"]:hover {
   }
 
   input[type="text"] {
+    margin-left: -6px;
     font-size: 12px;
     margin-bottom: 15px;
   }
@@ -201,7 +202,9 @@ button:hover, input[type="submit"]:hover {
 
 @media screen and (max-width: 486px) {
   .purchase-item {
-    width: 100px; /* Further adjust width for smallest screens */
+    width: 211px;
+    flex-direction: column;
+    margin-right: 10px;/* Further adjust width for smallest screens */
   }
 
   .item-image img {
