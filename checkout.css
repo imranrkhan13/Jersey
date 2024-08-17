@@ -37,6 +37,7 @@ img:hover {
     max-width: 1068px;
     margin: auto;
     width: 100%;
+    
 }
 
 section {
@@ -375,7 +376,7 @@ header {
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 425px) {
     .nav {
         padding: 11px;
     }
