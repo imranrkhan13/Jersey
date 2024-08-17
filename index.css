@@ -37,6 +37,7 @@ img:hover {
     max-width: 1068px;
     margin: auto;
     width: 100%;
+    
 }
 
 section {
@@ -352,6 +353,9 @@ header {
         margin-left: 4pc;
         width: 90%;
     }
+    .product-img{
+        height: 350px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -367,9 +371,12 @@ header {
         margin-left: 20px;
         width: 92%;
     }
+    .product-img{
+        height: 350px;
+    }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 425px) {
     .nav {
         padding: 11px;
     }
@@ -385,5 +392,8 @@ header {
     header {
         margin-left: 1pc;
         width: 94%;
+    }
+    .product-img{
+        height: 350px;
     }
 }
