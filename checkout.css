@@ -256,3 +256,10 @@ h1 {
         padding: 19px;
     }
 }
+@media screen and (max-width: 425px) {
+    #purchaseItems {
+        margin-left: -9px;
+        padding-left: 12px;
+        padding-right: 9px;
+    }
+}
