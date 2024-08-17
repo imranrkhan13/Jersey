@@ -262,4 +262,7 @@ h1 {
         padding-left: 12px;
         padding-right: 9px;
     }
+     form{
+        margin-left: -4px;
+    }
 }
