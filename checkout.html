@@ -63,8 +63,8 @@
       
       <h3>Payment Method</h3>
       <div class="payment-buttons">
-        <button type="button" class="payment-btn">PayPal</button>
-        <button type="button" class="payment-btn">GPay</button>
+        <button type="button" class="payment-btn" data-method="PayPal">PayPal</button>
+        <button type="button" class="payment-btn" data-method="GPay">GPay</button>
       </div>
       
       <button type="submit" class="submit-btn">Buy Now</button>
@@ -72,66 +72,69 @@
   </div>
 
   <script>
-    // Your existing JavaScript code here
-
     document.addEventListener('DOMContentLoaded', function() {
-    var purchaseItems = JSON.parse(localStorage.getItem('purchaseItems')) || [];
-    var purchaseItemsContainer = document.getElementById('purchaseItems');
+        var purchaseItems = JSON.parse(localStorage.getItem('purchaseItems')) || [];
+        var purchaseItemsContainer = document.getElementById('purchaseItems');
+        var totalPrice = 0;
 
-    var totalPrice = 0;
+        purchaseItems.forEach(function(item) {
+            var itemPrice = parseFloat(item.price.replace('$', ''));
+            var itemTotal = itemPrice * parseInt(item.quantity);
+            totalPrice += itemTotal;
 
-    purchaseItems.forEach(function(item) {
-        console.log("Image path:", item.productImg);
+            var itemElement = document.createElement('div');
+            itemElement.className = 'purchase-item';
+            itemElement.innerHTML = `
+                <div class="item-image">
+                    <img src="${item.productImg}" alt="${item.title} Jersey" onerror="this.onerror=null; this.src='default.jpg'">
+                </div>
+                <div class="item-details">
+                    <h3>${item.title}</h3>
+                    <p><strong>Size:</strong> ${item.size}</p>
+                    <p><strong>Quantity:</strong> ${item.quantity}</p>
+                    <p><strong>Unit Price:</strong> ${item.price}</p>
+                    <p><strong>Total Price:</strong> $${itemTotal.toFixed(2)}</p>
+                </div>
+            `;
+            purchaseItemsContainer.appendChild(itemElement);
+        });
 
-        // Convert price to a number and multiply by quantity
-        var itemPrice = parseFloat(item.price.replace('$', ''));
-        var itemTotal = itemPrice * parseInt(item.quantity);
-        totalPrice += itemTotal;
+        var totalCostElement = document.getElementById('totalCost');
+        totalCostElement.textContent = `$${totalPrice.toFixed(2)}`;
 
-        var itemElement = document.createElement('div');
-        itemElement.className = 'purchase-item';
-        itemElement.innerHTML = `
-            <div class="item-image">
-                <img src="${item.productImg}" alt="${item.title} Jersey" onerror="this.onerror=null; this.src='default.jpg'">
-            </div>
-            <div class="item-details">
-                <h3>${item.title}</h3>
-                <p><strong>Size:</strong> ${item.size}</p>
-                <p><strong>Quantity:</strong> ${item.quantity}</p>
-                <p><strong>Unit Price:</strong> ${item.price}</p>
-                <p><strong>Total Price:</strong> $${itemTotal.toFixed(2)}</p>
-            </div>
-        `;
-        purchaseItemsContainer.appendChild(itemElement);
-    });
+        let selectedPaymentMethod = '';
 
-    var totalCostElement = document.getElementById('totalCost');
-    totalCostElement.textContent = `$${totalPrice.toFixed(2)}`;
-
-    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        var customerInfo = {};
-        formData.forEach((value, key) => { customerInfo[key] = value });
-        localStorage.setItem('customerInfo', JSON.stringify(customerInfo));
-        window.location.href = 'receipt.html';
-    });
-    document.querySelectorAll('.payment-btn').forEach(button => {
+        document.querySelectorAll('.payment-btn').forEach(button => {
             button.addEventListener('click', function() {
-                if (this.classList.contains('selected')) {
-                    // If the clicked button is already selected, deselect it
-                    this.classList.remove('selected');
-                } else {
-                    // If it's not selected, deselect all other buttons and select this one
-                    document.querySelectorAll('.payment-btn').forEach(btn => {
-                        btn.classList.remove('selected');
-                    });
-                    this.classList.add('selected');
-                }
+                // Deselect all buttons
+                document.querySelectorAll('.payment-btn').forEach(btn => btn.classList.remove('selected'));
+                
+                // Select the clicked button
+                this.classList.add('selected');
+                
+                // Set selected payment method
+                selectedPaymentMethod = this.getAttribute('data-method');
             });
         });
-});
 
-</script>
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (!selectedPaymentMethod) {
+                alert("Please select a payment method.");
+                return;
+            }
+
+            var formData = new FormData(this);
+            var customerInfo = {};
+            formData.forEach((value, key) => { customerInfo[key] = value });
+            
+            customerInfo.paymentMethod = selectedPaymentMethod; // Add payment method to customer info
+            
+            localStorage.setItem('customerInfo', JSON.stringify(customerInfo));
+            window.location.href = 'receipt.html';
+        });
+    });
+  </script>
 </body>
 </html>
