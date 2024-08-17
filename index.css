@@ -44,7 +44,7 @@ section {
 }
 
 .section-title {
-    margin-top: 56px;
+    margin-top: 43px;
     font-size: 1.5rem;
     font-weight: 600;
     text-align: center;
@@ -133,6 +133,30 @@ header {
     margin-bottom: 2rem;
 }
 
+.detail-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 0.2rem; /* Reduced gap between title and price */
+    overflow-wrap: anywhere; 
+}
+
+.cart-product-title {
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-color);
+    white-space: nowrap; /* Prevents text from wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Truncates long text with ellipsis */
+}
+
+.cart-price {
+    font-weight: 500;
+    color: var(--main-color);
+    margin-top: 0.2rem; /* Adjust the margin to align properly with the title */
+}
+
 .cart-box {
     display: grid;
     grid-template-columns: 32% 50% 18%;
@@ -143,6 +167,7 @@ header {
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    height: auto; /* Ensure height adjusts automatically */
 }
 
 .cart-img {
@@ -152,22 +177,6 @@ header {
     border-radius: 5px;
 }
 
-.detail-box {
-    display: grid;
-    row-gap: 0.5rem;
-}
-
-.cart-product-title {
-    font-size: 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    color: var(--text-color);
-}
-
-.cart-price {
-    font-weight: 500;
-    color: var(--main-color);
-}
 
 .cart-quantity {
     border: 1px solid var(--text-color);
@@ -265,27 +274,28 @@ header {
 
 .product-img {
     width: 100%;
-    height: auto;
+    height: 250px; /* Set a fixed height for all images */
+    object-fit: cover; /* Ensure images fit within the specified height */
     margin-bottom: 0.5rem;
     transition: transform 0.3s ease;
 }
-
 .product-title {
     font-weight: 600;
     text-transform: uppercase;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem; /* Adjust spacing */
     font-size: 1rem;
 }
 
 .price {
     font-weight: 500;
     color: var(--main-color);
+    margin-bottom: 0.5rem; /* Adjust spacing */
 }
 
 .add-cart {
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 10px;
+    right: 10px;
     background: var(--main-color);
     color: var(--bg-color);
     padding: 10px;
