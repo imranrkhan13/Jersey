@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Checkout</title>
 </head>
@@ -63,9 +64,14 @@
       
       <h3>Payment Method</h3>
       <div class="payment-buttons">
-        <button type="button" class="payment-btn" data-method="PayPal">PayPal</button>
-        <button type="button" class="payment-btn" data-method="GPay">GPay</button>
-      </div>
+        <button type="button" class="payment-btn" data-method="PayPal">
+          <i class="fab fa-paypal"></i> PayPal
+        </button>
+      <button type="button" class="payment-btn" data-method="GPay">
+        <i class="fab fa-google-pay"></i> GPay
+      </button>
+    </div>
+
       
       <button type="submit" class="submit-btn">Buy Now</button>
     </form>
@@ -105,17 +111,23 @@
         let selectedPaymentMethod = '';
 
         document.querySelectorAll('.payment-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                // Deselect all buttons
-                document.querySelectorAll('.payment-btn').forEach(btn => btn.classList.remove('selected'));
-                
-                // Select the clicked button
-                this.classList.add('selected');
-                
-                // Set selected payment method
-                selectedPaymentMethod = this.getAttribute('data-method');
-            });
-        });
+    button.addEventListener('click', function() {
+        const isSelected = this.classList.contains('selected');
+        
+        if (!isSelected) {
+            document.querySelectorAll('.payment-btn').forEach(btn => btn.classList.remove('selected'));
+            
+            this.classList.add('selected');
+            
+            selectedPaymentMethod = this.getAttribute('data-method');
+        } else {
+            this.classList.remove('selected');
+            
+            selectedPaymentMethod = '';
+        }
+    });
+});
+
 
         document.getElementById('checkoutForm').addEventListener('submit', function(e) {
             e.preventDefault();
