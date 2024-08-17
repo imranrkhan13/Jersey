@@ -152,6 +152,7 @@ h1 {
 
 /* Payment buttons */
 .payment-buttons {
+    font-weight: 400;
   display: flex;
   gap: 10px;
 }
@@ -174,7 +175,19 @@ h1 {
   background-color: #4CAF50;
   color: white;
 }
+.payment-btn i {
+    margin-right: 0.5rem;
+    font-size: 1.2rem; /* Adjust icon size */
+}
+/* PayPal Icon Styles */
+.payment-btn[data-method="PayPal"] i {
+    color: #003087; /* PayPal blue */
+}
 
+/* Google Pay Icon Styles */
+.payment-btn[data-method="GPay"] i {
+    color: #4285F4; /* Google Pay blue */
+}
 /* Submit button */
 .submit-btn {
     display: block;
